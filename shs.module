@@ -795,13 +795,13 @@ function shs_field_formatter_view($entity_type, $entity, $field, $instance, $lan
         // Add parent term names.
         foreach ($item['parents'] as $parent) {
           $list_items[] = array(
-            'data' => $settings['linked'] ? l($parent->name, "taxonomy/term/{$parent->tid}") : check_plain($parent->name),
+            'data' => $settings['linked'] ? l($parent->name, "taxonomy/term/{$parent->tid}") : str_replace('&amp;', '&', filter_xss($parent->name)),
             'class' => array('shs-parent'),
           );
         }
         // Add name of selected term.
         $list_items[] = array(
-          'data' => $settings['linked'] ? l($item['term']->name, "taxonomy/term/{$item['term']->tid}") : check_plain($item['term']->name),
+          'data' => $settings['linked'] ? l($item['term']->name, "taxonomy/term/{$item['term']->tid}") : str_replace('&amp;', '&', filter_xss($item['term']->name)),
           'class' => array('shs-term-selected'),
         );
         $elements[$delta] = array(
@@ -893,7 +893,7 @@ function shs_term_get_children($identifier, $parent = 0, array $settings = array
           elseif (module_exists('entity_translation')) {
             $term_name = entity_label('taxonomy_term', $term);
           }
-          $terms[$vocabulary_cache_key][$langcode][$parent][$term->tid] = check_plain($term_name);
+          $terms[$vocabulary_cache_key][$langcode][$parent][$term->tid] = str_replace('&amp;', '&', filter_xss($term_name));
         }
       }
       // Set cached data.
